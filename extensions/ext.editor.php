@@ -37,7 +37,7 @@ class Editor
 	 *
 	 * @var string
 	 */
-	var $version = '0.0.2';
+	var $version = '0.0.3';
 
 	/**
 	 * Extension Description
@@ -199,7 +199,7 @@ class Editor
 		                            AND enabled = 'y'
 		                          LIMIT 1");
 		$lgau_enabled = $lgau_query->num_rows ? TRUE : FALSE;
-		$check_for_extension_updates = ($lgau_enabled AND $current['check_for_extension_updates'] == 'y') ? TRUE : FALSE;
+		$check_for_extension_updates = ($lgau_enabled AND ( ! isset($current['check_for_extension_updates']) OR $current['check_for_extension_updates'] == 'y')) ? TRUE : FALSE;
 
 		$DSP->body .= $DSP->table_open(
 		                                   array(
