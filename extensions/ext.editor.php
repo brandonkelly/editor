@@ -37,7 +37,7 @@ class Editor
 	 *
 	 * @var string
 	 */
-	var $version = '0.0.3';
+	var $version = '1.0.0';
 
 	/**
 	 * Extension Description
