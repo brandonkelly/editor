@@ -3,7 +3,7 @@
 $L = array(
 
 'donate' =>
-'This extension was developed by <a href="http://brandon-kelly.com/?utm_campaign=editor_es">Brandon Kelly</a>.<br>Support its development by donating.',
+'Support Editor by donating',
 
 
 // -- Settings Form
