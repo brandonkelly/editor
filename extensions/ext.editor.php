@@ -39,7 +39,7 @@ class Editor
 	 *
 	 * @var string
 	 */
-	var $version = '1.0.0';
+	var $version = '1.0.2';
 
 	/**
 	 * Extension Description
@@ -295,16 +295,18 @@ class Editor
 	 */
 	function save_settings()
 	{
-		global $DB;
-
+		global $DB, $PREFS;
+		
+		$settings = $this->get_all_settings();
+		
 		// Save new settings
-		$this->settings = array(
+		$settings[$PREFS->ini('site_id')] = $this->settings = array(
 			'cp_url'                      => ($_POST['cp_url'] ? $_POST['cp_url'] : SELF),
 			'check_for_extension_updates' => $_POST['check_for_extension_updates'],
 		);
-
+		
 		$DB->query("UPDATE exp_extensions
-		            SET settings = '".addslashes(serialize($this->settings))."'
+		            SET settings = '".addslashes(serialize($settings))."'
 		            WHERE class = '{$this->class_name}'");
 	}
 
@@ -488,6 +490,14 @@ class Editor
 		if ( ! isset($EDITOR_ENTRIES))
 		{
 			$EDITOR_ENTRIES = array();
+			
+			if ( ! ($this->settings AND isset($this->settings['cp_url'])))
+			{
+				$this->settings = $this->get_site_settings($this->get_all_settings());
+			}
+			
+			$EDITOR_BASE = ($this->settings['cp_url'] ? $this->settings['cp_url'] : PATH)
+			             . '?S='.$SESS->userdata['session_id'];
 
 			// Add Editor button styles
 			$tagdata = '<style type="text/css"> '
@@ -496,13 +506,6 @@ class Editor
 			         . '.editor-button a:hover { opacity:1; }'
 			         . '</style>'
 			         . $tagdata;
-		}
-
-		// Define $EDITOR_BASE
-		if ( ! isset($EDITOR_BASE))
-		{
-			$EDITOR_BASE = ($this->settings['cp_url'] ? $this->settings['cp_url'] : PATH)
-			             . '?S='.$SESS->userdata['session_id'];
 		}
 
 		if (isset($row['entry_id']) AND is_numeric($row['entry_id']) AND ( ! in_array($row['entry_id'], $EDITOR_ENTRIES)))
