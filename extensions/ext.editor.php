@@ -302,7 +302,7 @@ class Editor
 		// Save new settings
 		$settings[$PREFS->ini('site_id')] = $this->settings = array(
 			'cp_url'                      => ($_POST['cp_url'] ? $_POST['cp_url'] : SELF),
-			'check_for_extension_updates' => $_POST['check_for_extension_updates'],
+			'check_for_extension_updates' => (isset($_POST['check_for_extension_updates']) ? $_POST['check_for_extension_updates'] : 'y'),
 		);
 		
 		$DB->query("UPDATE exp_extensions
